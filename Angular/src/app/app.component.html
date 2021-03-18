@@ -1,0 +1,77 @@
+<h2>
+  Angular framework - Final task
+</h2>
+
+<dx-data-grid #mainGrid
+              id="gridContainer"
+              [dataSource]="dataSource"
+              [showBorders]="true"
+              [repaintChangesOnly]="true"
+              (onEditorPreparing)="onEditorPreparing($event)"
+              (onEditingStart)="onEditingStart($event)"
+              (onInitNewRow)="onInitNewRow($event)"
+              (onSaving)="onSaving($event)">
+  <dxo-editing mode="popup"
+               [allowUpdating]="true"
+               [allowAdding]="true"
+               [allowDeleting]="true">
+    <dxo-popup [showTitle]="true"
+               [width]="800"
+               [height]="400">
+
+      <dxi-toolbar-item widget="dxButton"
+                        location="after"
+                        toolbar="bottom"
+                        [options]="{
+            text: 'Save',
+            disabled: allValid,
+            onClick: saveButton
+        }">
+      </dxi-toolbar-item>
+      <dxi-toolbar-item widget="dxButton"
+                        location="after"
+                        toolbar="bottom"
+                        [options]="{
+            text: 'Cancel',
+            onClick: cancelButton
+        }">
+      </dxi-toolbar-item>
+    </dxo-popup>
+    <dxo-form [colCount]="1">
+    </dxo-form>
+  </dxo-editing>
+  <dxi-column dataField="Name" [setCellValue]="setCellValue">
+    <dxi-validation-rule type="required"></dxi-validation-rule>
+  </dxi-column>
+  <dxi-column dataField="Subjects"
+              [allowSorting]="false"
+              [customizeText]="customizeText"
+              editCellTemplate="subjectEditor">
+  </dxi-column>
+
+  <div *dxTemplate="let cellInfo of 'subjectEditor'">
+    <dx-data-grid [dataSource]="subjects"
+                  [height]="250"
+                  (onRowValidating)="onRowValidating($event)"
+                  (onRowRemoved)="onRowRemoved($event)"
+                  (onEditorPreparing)="onEditorPreparingSub($event)">
+      <dxi-column dataField="SubjectCode" [setCellValue]="setCellValue">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column dataField="SubjectName" [setCellValue]="setCellValue">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxi-column dataField="Section" [setCellValue]="setCellValue">
+        <dxi-validation-rule type="required"></dxi-validation-rule>
+      </dxi-column>
+      <dxo-editing mode="row"
+                   [allowDeleting]="true"
+                   [allowAdding]="true"
+                   [allowUpdating]="true">
+
+      </dxo-editing>
+    </dx-data-grid>
+  </div>
+</dx-data-grid>
+
+
