@@ -49,6 +49,6 @@ const data = [{
     }]
 }];
 
-export function getEmployes() {
+export function getEmployees() {
     return data;
 };

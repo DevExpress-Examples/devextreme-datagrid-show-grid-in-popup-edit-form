@@ -1,10 +1,13 @@
 # React
 
-Take a look at the following files of this example to see the required code: 
 
-Your files go here
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The main steps are:
+-  The `columns|editCellComponent` option is used to display dxDataGrid in the editing form
+- dxDataGrid operates data in Controlled mode via the [changes](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/Configuration/editing/changes/) option
+-  The `utils.js` file contains a possible implementation of handling the shared state and data processing actions.
+-  In the detail dxDataGrid, we handled [onSaved](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/Configuration/#onSaved) to pass changes from the detail grid to the React State.
 
 ## Available Scripts
 

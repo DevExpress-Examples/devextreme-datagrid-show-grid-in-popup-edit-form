@@ -12,12 +12,12 @@ import DataGrid, {
 import Button from 'devextreme-react/button';
 
 import 'devextreme-react/text-area';
-import { getEmployes } from '../sevices/employees';
+import { getEmployees } from '../sevices/employees';
 
 import { reducer, checkIsValid } from "../utils";
 
 const initialState = {
-    data: getEmployes(),
+    data: getEmployees(),
     disabled: false,
     changes: [],
     detailData: null,
@@ -33,12 +33,11 @@ export const HomeComponent = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const customizeText = useCallback((cellInfo) => {
         if (cellInfo.value) {
-            cellInfo.valueText = "";
+            let cellText = "";
             cellInfo.value.forEach((subject) => {
-                cellInfo.valueText += subject.SubjectName + ',';
+                cellText += subject.SubjectName + ',';
             })
-            cellInfo.valueText = cellInfo.valueText.slice(0, -1);
-            return cellInfo.valueText;
+            return cellText;
         }
     }, []);
 
