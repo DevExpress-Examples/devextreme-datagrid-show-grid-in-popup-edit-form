@@ -20,7 +20,7 @@ export class AppComponent {
     this.dataSource = new DataSource({
       store: {
         type: "array",
-        key:"ID",
+        key: "ID",
         data: service.getEmployees()
       }
     });
@@ -39,12 +39,12 @@ export class AppComponent {
       this.allValid = !e.row.data.Name || e.row.data.Name === "" && e.row.data.hasOwnProperty("Name") || this.subjects.length === 0;
     }
   }
-  
+
   onEditorPreparingSub(e: any) {
     if (e.parentType === "dataRow") {
       if (!e.row.data.SubjectCode || e.row.data.SubjectCode === "" ||
         !e.row.data.SubjectName || e.row.data.SubjectName === "" ||
-        !e.row.data.Section || e.row.data.Section === "" || e.component.hasEditData()) 
+        !e.row.data.Section || e.row.data.Section === "" || e.component.hasEditData())
         this.allValid = true;
       else
         this.allValid = false;
@@ -54,13 +54,13 @@ export class AppComponent {
 
   customizeText(cellInfo: any) {
     if (cellInfo.value) {
-      cellInfo.valueText = "";
-      cellInfo.value.map((subject: any) => {
-        cellInfo.valueText += subject.SubjectCode + ',';
+      let cellText = "";
+      cellInfo.value.forEach((subject: any) => {
+        cellText += subject.SubjectName + ',';
       })
-      cellInfo.valueText = cellInfo.valueText.slice(0, -1);
-      return cellInfo.valueText;
+      return cellText.slice(0, cellText.length - 1);
     }
+    return cellInfo.valueText;
   }
 
   setCellValue(newData: any, value: any) {

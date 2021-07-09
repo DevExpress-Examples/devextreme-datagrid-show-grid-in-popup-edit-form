@@ -37,8 +37,9 @@ export const HomeComponent = () => {
             cellInfo.value.forEach((subject) => {
                 cellText += subject.SubjectName + ',';
             })
-            return cellText;
+            return cellText.slice(0, cellText.length - 1);
         }
+        return cellInfo.valueText;
     }, []);
 
     const onSaving = useCallback((e) => {
