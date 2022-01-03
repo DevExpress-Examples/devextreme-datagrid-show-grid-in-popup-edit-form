@@ -140,14 +140,12 @@ const SubjectEditor = ({ data }) => {
         let results = changes[0] && changes[0].data && changes[0].data.Subjects ?
             changes[0].data.Subjects :
             data.data.Subjects ? [...data.data.Subjects] : [];
-        console.log('calculate_memo_subjects');
         return results;
     }, [changes, data]);
 
     const onSaved = useCallback((e) => {
-
         let validationResult = true;
-
+        
         if (changes.length === 0)
             changes.push({ data: { Subjects: subjects }, key: state.editRowKey, type: "update" })
         else
