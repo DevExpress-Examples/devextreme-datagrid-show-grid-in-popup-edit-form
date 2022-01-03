@@ -2,7 +2,6 @@ import applyChanges from 'devextreme/data/apply_changes';
 
 function reducer(state, { type, payload }) {
     let newData;
-    console.log(type, payload)
     switch (type) {
         case "Saving":
             if (!payload.data)
