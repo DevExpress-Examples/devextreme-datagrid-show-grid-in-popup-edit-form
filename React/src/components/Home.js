@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useReducer, useRef } from 'react';
+import React, { useCallback, useMemo, useContext, useReducer, useRef } from 'react';
 
 
 import DataGrid, {
@@ -57,24 +57,25 @@ export const HomeComponent = () => {
     const onEditRowKeyChange = useCallback((editRowKey) => {
         dispatch({ payload: editRowKey, type: "Set_Key" });
     }, []);
-    const cancelClickHandler = (args) => {
+    const cancelClickHandler = useCallback((args) => {
         let gridInstance = gridRef.current.instance;
         gridInstance.cancelEditData();
-    }
-    const saveClickHandler = (args) => {
+    }, [])
+    const saveClickHandler = useCallback((args) => {
         let gridInstance = gridRef.current.instance;
         gridInstance.saveEditData();
-    }
+    }, [])
 
-    const onEditorPreparing = (e) => {
+    const onEditorPreparing = useCallback((e) => {
         if (e.parentType === "dataRow") {
             let result = checkIsValid(e.row);
             dispatch({ type: "Set_Valid", payload: result });
         }
-    }
+    }, [])
+    const contextValues = { action: dispatch, state, cancelClickHandler, saveClickHandler };
     return (
         <div id="data-grid-demo">
-            <DataContext.Provider value={{ action: dispatch, state, cancelClickHandler, saveClickHandler }} >
+            <DataContext.Provider value={contextValues} >
                 <DataGrid
                     dataSource={state.data}
                     keyExpr="ID"
@@ -123,22 +124,30 @@ const CancelButton = (props) => {
     ></Button>)
 }
 const SaveButton = (props) => {
-    const { state, saveClickHandler  } = useContext(DataContext);
+    const { state, saveClickHandler } = useContext(DataContext);
     return (<Button
         text="Save"
         disabled={!state.isValid}
         onClick={saveClickHandler}
     ></Button>)
 }
+
 const SubjectEditor = ({ data }) => {
     const { state, action } = useContext(DataContext);
-    let changes = state.changes
-    const subjects = changes[0] && changes[0].data && changes[0].data.Subjects ? state.changes[0].data.Subjects : data.data.Subjects ? [...data.data.Subjects] : [];
 
-    const onSaved = (e) => {
+    const changes = state.changes
+    const subjects = useMemo(() => {
+        let results = changes[0] && changes[0].data && changes[0].data.Subjects ?
+            changes[0].data.Subjects :
+            data.data.Subjects ? [...data.data.Subjects] : [];
+        console.log('calculate_memo_subjects');
+        return results;
+    }, [changes, data]);
+
+    const onSaved = useCallback((e) => {
 
         let validationResult = true;
-        let changes = [...state.changes]
+
         if (changes.length === 0)
             changes.push({ data: { Subjects: subjects }, key: state.editRowKey, type: "update" })
         else
@@ -146,29 +155,31 @@ const SubjectEditor = ({ data }) => {
 
         validationResult = checkIsValid(changes[0]);
         action({
-            type: "Set_Changes", 
+            type: "Set_Changes",
             payload: {
                 changes: changes,
                 isValid: validationResult
             }
         });
-    };
+    }, [action, changes, subjects, state.editRowKey]);
     return (
-        <DataGrid
-            dataSource={subjects}
-            onSaved={onSaved}
-            keyExpr="SubjectCode"
-            repaintChangesOnly={true}
-            height={250}
-        >
-            <Column dataField="SubjectName">
-                <ValidationRule type="required" />
-            </Column>
-            <Column dataField="Section">
-                <ValidationRule type="required" />
-            </Column>
-            <Editing mode="row" allowAdding={true} allowDeleting={true} allowUpdating={true} />
-        </DataGrid>
+        <div>
+            <DataGrid
+                dataSource={subjects}
+                onSaved={onSaved}
+                keyExpr="SubjectCode"
+                repaintChangesOnly={true}
+                height={250}
+            >
+                <Column dataField="SubjectName">
+                    <ValidationRule type="required" />
+                </Column>
+                <Column dataField="Section">
+                    <ValidationRule type="required" />
+                </Column>
+                <Editing mode="row" allowAdding={true} allowDeleting={true} allowUpdating={true} />
+            </DataGrid>
+        </div>
     )
 }
 
