@@ -136,12 +136,9 @@ const SubjectEditor = ({ data }) => {
     const { state, action } = useContext(DataContext);
 
     const changes = state.changes
-    const subjects = useMemo(() => {
-        let results = changes[0] && changes[0].data && changes[0].data.Subjects ?
-            changes[0].data.Subjects :
-            data.data.Subjects ? [...data.data.Subjects] : [];
-        return results;
-    }, [changes, data]);
+    const subjects = useMemo(() => changes[0]?.data?.Subjects ?
+    changes[0].data.Subjects :
+    data.data.Subjects ? [...data.data.Subjects] : [], [changes, data]);
 
     const onSaved = useCallback((e) => {
         let validationResult = true;
