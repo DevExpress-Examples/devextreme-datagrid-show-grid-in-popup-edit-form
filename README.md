@@ -6,3 +6,29 @@
 # DataGrid for DevExtreme - How to define DataGrid in the Popup Edit Form to edit a data field 
 
 This example illustrates how to show DataGrid in the Popup Edit Form and implement CRUD operations for a data field that contains an array.
+
+<div align="center"><img alt="DataGrid for DevExtreme - How to define DataGrid in the Popup Edit Form to edit a data field" src="datagrid-in-popup-form.png" /></div>
+
+## Files to Review
+
+- **Angular**
+    - [app.component.html](Angular/src/app/app.component.html)
+    - [app.component.ts](Angular/src/app/app.component.ts)
+- **jQuery**
+    - [index.js](jQuery/src/index.js)
+- **React**
+    - [App.js](React/src/App.js)
+- **Vue**
+    - [App.vue](Vue/src/App.vue)
+- **ASP.Net Core**    
+    - [Index.cshtml](ASP.NET/MyApplication/Views/Home/Index.cshtml)
+
+## Documentation
+
+- [Getting Started with DataGrid](https://js.devexpress.com/Documentation/Guide/UI_Components/DataGrid/Getting_Started_with_DataGrid/)
+
+- [DataGrid - API Reference](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/)
+
+- [Popup - API Reference](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxPopup/)
+
+- [Form - API Reference](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxForm/)
