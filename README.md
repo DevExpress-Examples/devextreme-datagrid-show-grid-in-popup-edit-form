@@ -4,8 +4,5 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
 # How to show DataGrid in popup to display and or edit a detail array
-<!-- run online -->
-**[[Run Online]](https://codecentral.devexpress.com/349009824/)**
-<!-- run online end -->
 
 This example illustrates how to show DataGrid in popup and implement CRUD operations on a detail array.
