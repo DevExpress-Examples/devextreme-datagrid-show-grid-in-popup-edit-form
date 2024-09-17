@@ -22,7 +22,7 @@
 
     <template #subjectsEditor="{ data: cellInfo }">
       <SubjectsEditorComponent
-        :data-source="JSON.parse(JSON.stringify(cellInfo.value)) || []"
+        :data-source="cellInfo.value? JSON.parse(JSON.stringify(cellInfo.value)) : []"
         :on-saved="(e) => onSubjectsSaved(e, cellInfo.setValue)"
         :on-initialized="getNestedGridInstance"
       />
