@@ -1,0 +1,72 @@
+@using MyApplication.Models
+
+<h2>Home</h2>
+
+@(Html.DevExtreme().DataGrid<Student>()
+    .ShowBorders(true)
+    .DataSource(d => d.Mvc().Controller("SampleData")
+        .Key("ID")
+        .LoadAction("GetStudents")
+        .InsertAction("InsertStudent")
+        .UpdateAction("UpdateStudent")
+        .DeleteAction("DeleteStudent")
+    )
+    .Columns(columns => {
+        columns.AddFor(m => m.Name);
+
+        columns.AddFor(m => m.Subjects)
+            .CellTemplate(new JS("cellTemplate"))
+            .EditCellTemplate(new TemplateName("subjectEditor"));
+    })
+    .Editing(editing => editing
+        .Mode(GridEditMode.Popup)
+        .AllowAdding(true)
+        .AllowDeleting(true)
+        .AllowUpdating(true)
+        .Form(form => form.ColCount(1))
+        .Popup(popup => popup
+            .ShowTitle(true)
+            .Title("Student")
+            .Width(800)
+            .Height(400)
+        )
+    )
+)
+
+@using (Html.DevExtreme().NamedTemplate("subjectEditor"))
+{
+    @(Html.DevExtreme().DataGrid<Subject>()
+        .DataSource(new JS("data.Subjects || []"))
+        .KeyExpr("Code")
+        .Columns(columns => {
+            columns.AddFor(m => m.Code);
+            columns.AddFor(m => m.Name);
+            columns.AddFor(m => m.Section);
+        })
+        .Editing(editing => editing
+            .Mode(GridEditMode.Row)
+            .AllowAdding(true)
+            .AllowDeleting(true)
+            .AllowUpdating(true)
+        )
+        .OnSaved("(e) => setValue(e.component.option('dataSource'))")
+        .OnOptionChanged("(e) => onOptionChanged(e, setValue)")
+    )
+}
+
+<script>
+    function cellTemplate(container, options) {
+        const noBreakSpace = '\u00A0';
+        const text = (options.value || []).map((element) => element.Name).join(', ');
+        container.text(text || noBreakSpace).attr('title', text);
+    }
+
+    function onOptionChanged(e, setValue) {
+        if (e.fullName === "editing.changes") {
+            var changes = e.component.option("editing.changes");
+            var data = e.component.option("dataSource");
+            data = DevExpress.data.applyChanges(data, changes, { keyExpr: 'Code' });
+            setValue(data);
+        }
+    }
+</script>
