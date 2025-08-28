@@ -8,7 +8,7 @@
 
 This example illustrates how to show DataGrid in the Popup Edit Form and implement CRUD operations for a data field that contains an array.
 
-<div align="center"><img alt="DataGrid for DevExtreme - How to define DataGrid in the Popup Edit Form to edit a data field" src="datagrid-in-popup-form.png" /></div>
+<div align="center"><img alt="DataGrid for DevExtreme - How to define DataGrid in the Popup Edit Form to edit a data field" src="images/datagrid-in-popup-form.png" /></div>
 
 ## Files to Review
 
@@ -22,7 +22,7 @@ This example illustrates how to show DataGrid in the Popup Edit Form and impleme
 - **Vue**
     - [App.vue](Vue/src/App.vue)
 - **ASP.Net Core**    
-    - [Index.cshtml](ASP.NET/MyApplication/Views/Home/Index.cshtml)
+    - [Index.cshtml](ASP.NET Core/MyApplication/Views/Home/Index.cshtml)
 
 ## Documentation
 
