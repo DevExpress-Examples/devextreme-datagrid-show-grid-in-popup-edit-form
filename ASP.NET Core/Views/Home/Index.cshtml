@@ -1,21 +1,28 @@
-@using ASP_NET_Core.Models
+@using ASP.NET_Core.Models
 
 <h2>DevExtreme DataGrid - Show Grid in Popup Edit Form</h2>
 
-@(Html.DevExtreme().DataGrid<Student>()
+@(Html.DevExtreme().DataGrid<StudentSubject>()
     .ShowBorders(true)
     .DataSource(d => d.Mvc().Controller("SampleData")
         .Key("ID")
-        .LoadAction("GetStudents")
-        .InsertAction("InsertStudent")
-        .UpdateAction("UpdateStudent")
-        .DeleteAction("DeleteStudent")
+        .LoadAction("GetStudentSubjects")
+        .InsertAction("InsertStudentSubject")
+        .UpdateAction("UpdateStudentSubject")
+        .DeleteAction("DeleteStudentSubject")
     )
     .Columns(columns => {
-        columns.AddFor(m => m.Name);
+        columns.AddFor(m => m.StudentID)
+            .Caption("Student Name")
+            .Lookup(lookup => lookup
+                .AllowClearing(true)
+                .DataSource(d => d.Mvc().Controller("SampleData").LoadAction("GetStudents"))
+                .ValueExpr("ID")
+                .DisplayExpr("Name")
+            );
 
         columns.AddFor(m => m.Subjects)
-            .CellTemplate(new JS("cellTemplate"))
+            .CellTemplate(new JS("subjectsCellTemplate"))
             .EditCellTemplate(new TemplateName("subjectEditor"));
     })
     .Editing(editing => editing
@@ -23,25 +30,45 @@
         .AllowAdding(true)
         .AllowDeleting(true)
         .AllowUpdating(true)
-        .Form(form => form.ColCount(1))
+        .Form(form => form
+            .ColCount(1)
+            .Items(items => {
+                items.AddSimpleFor(m => m.StudentID)
+                    .ColSpan(2)
+                    .ValidationRules(rules => rules.AddRequired().Message("Student Name is required!"));
+                items.AddSimpleFor(m => m.Subjects)
+                    .ColSpan(2);
+            })
+        )
         .Popup(popup => popup
             .ShowTitle(true)
-            .Title("Student")
+            .Title("Student Subject")
             .Width(800)
-            .Height(400)
+            .Height(500)
+            .OnContentReady("onPopupContentReady")
         )
     )
+    .OnEditingStart("onEditingStart")
+    .OnEditorPreparing("onEditorPreparing")
+    .OnInitNewRow("onInitNewRow")
+    .OnSaving("onSaving")
 )
 
 @using (Html.DevExtreme().NamedTemplate("subjectEditor"))
 {
     @(Html.DevExtreme().DataGrid<Subject>()
-        .DataSource(new JS("data.Subjects || []"))
+        .DataSource(new JS("subjects"))
         .KeyExpr("Code")
         .Columns(columns => {
-            columns.AddFor(m => m.Code);
-            columns.AddFor(m => m.Name);
-            columns.AddFor(m => m.Section);
+            columns.AddFor(m => m.Code)
+                .ValidationRules(rules => rules.AddRequired());
+            columns.AddFor(m => m.Name)
+                .ValidationRules(rules => rules.AddRequired());
+            columns.AddFor(m => m.Units)
+                .ValidationRules(rules => {
+                    rules.AddRequired().Message("Units is required");
+                    rules.AddStringLength().Max(1).Message("Units must be more than 1 and less than 9");
+                });
         })
         .Editing(editing => editing
             .Mode(GridEditMode.Row)
@@ -49,24 +76,75 @@
             .AllowDeleting(true)
             .AllowUpdating(true)
         )
-        .OnSaved("(e) => setValue(e.component.option('dataSource'))")
-        .OnOptionChanged("(e) => onOptionChanged(e, setValue)")
+        .OnEditingStart("onSubjectEditingStart")
+        .OnRowValidating("onSubjectRowValidating")
+        .OnSaved("onSubjectSaved")
     )
 }
 
 <script>
-    function cellTemplate(container, options) {
-        const noBreakSpace = '\u00A0';
-        const text = (options.value || []).map((element) => element.Name).join(', ');
-        container.text(text || noBreakSpace).attr('title', text);
+    let canBeSaved;
+    let popup_instance;
+    let key;
+    let subjects;
+
+    function subjectsCellTemplate(container, options) {
+        let text = "";
+        if (options.value && options.value.length > 0) {
+            text = options.value.reduce((string, obj) => {
+                return string + obj.Name + ", ";
+            }, "").slice(0, -2);
+        }
+        container.text(text);
     }
 
-    function onOptionChanged(e, setValue) {
-        if (e.fullName === "editing.changes") {
-            var changes = e.component.option("editing.changes");
-            var data = e.component.option("dataSource");
-            data = DevExpress.data.applyChanges(data, changes, { keyExpr: 'Code' });
-            setValue(data);
+    function onPopupContentReady(e) {
+        popup_instance = e.component.instance();
+        if (canBeSaved) {
+            e.component.option("toolbarItems[0].disabled", true);
+            canBeSaved = false;
+        }
+    }
+
+    function onEditingStart(e) {
+        subjects = [...(e.data.Subjects || [])];
+    }
+
+    function onEditorPreparing(e) {
+        canBeSaved = e.row.isNewRow;
+        key = e.row.key;
+    }
+
+    function onInitNewRow(e) {
+        subjects = [];
+    }
+
+    function onSaving(e) {
+        if (e.changes[0]) {
+            if (e.changes[0].data) e.changes[0].data.Subjects = subjects;
+            return;
+        }
+        e.changes.push({ data: { Subjects: subjects }, key: key, type: "update" });
+    }
+
+    function onSubjectEditingStart(e) {
+        popup_instance.option("toolbarItems[0].disabled", true);
+    }
+
+    function onSubjectRowValidating(e) {
+        if (e.isValid) {
+            popup_instance.option("toolbarItems[0].disabled", false);
+        } else {
+            popup_instance.option("toolbarItems[0].disabled", true);
+        }
+    }
+
+    function onSubjectSaved(e) {
+        subjects = e.component.getDataSource().items();
+        if (e.component.getDataSource().items().length > 0) {
+            popup_instance.option("toolbarItems[0].disabled", false);
+        } else {
+            popup_instance.option("toolbarItems[0].disabled", true);
         }
     }
 </script>

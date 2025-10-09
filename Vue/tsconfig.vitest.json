@@ -1,9 +1,10 @@
 {
   "extends": "./tsconfig.app.json",
-  "exclude": [],
+  "exclude": ["**/*.vue.js"],
   "compilerOptions": {
     "composite": true,
     "lib": [],
+    "allowJs": true,
     "types": ["node", "jsdom"]
   }
 }

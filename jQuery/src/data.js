@@ -29,7 +29,8 @@ const studentSubject = [
   {
     ID: 1,
     StudentID: 1,
-    Subjects: [],
+    Subjects: [
+    ],
   },
   {
     ID: 2,
