@@ -1,11 +1,25 @@
 import { describe, it, expect } from 'vitest';
 
-import { mount } from '@vue/test-utils';
-import Content from '../HomeContent.vue';
+import { shallowMount } from '@vue/test-utils';
+import FormContent from '../FormContent.vue';
 
-describe('Content', () => {
-  it('renders properly', () => {
-    const wrapper = mount(Content, { props: { text: 'count' } });
-    expect(wrapper.text()).toContain('count');
+describe('FormContent', () => {
+  it('renders grid container', () => {
+    const wrapper = shallowMount(FormContent, {
+      global: {
+        stubs: [
+          'DxDataGrid',
+          'DxColumn',
+          'DxEditing',
+          'DxForm',
+          'DxPopup',
+          'DxToolbarItem',
+          'DxValidationRule',
+          'SubjectEditor',
+        ],
+      },
+    });
+
+    expect(wrapper.find('#app-container').exists()).toBe(true);
   });
 });

@@ -1,6 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { DxButtonModule } from 'devextreme-angular/ui/button';
+import {
+  DxDataGridModule,
+  DxButtonModule,
+  DxPopupModule,
+  DxFormModule,
+  DxToolbarModule,
+} from 'devextreme-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -11,7 +17,11 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    DxDataGridModule,
     DxButtonModule,
+    DxPopupModule,
+    DxFormModule,
+    DxToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

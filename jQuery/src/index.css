@@ -1,4 +1,11 @@
-.demo-container {
-    margin: 50px;
-    width: 90vw;
+#app-container {
+  position: relative;
+  width: 900px;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+}
+
+#data-grid {
+  width: 100%;
 }

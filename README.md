@@ -12,17 +12,22 @@ This example illustrates how to show DataGrid in the Popup Edit Form and impleme
 
 ## Files to Review
 
+- **jQuery**
+    - [index.js](jQuery/src/index.js)
 - **Angular**
     - [app.component.html](Angular/src/app/app.component.html)
     - [app.component.ts](Angular/src/app/app.component.ts)
-- **jQuery**
-    - [index.js](jQuery/src/index.js)
 - **React**
-    - [App.js](React/src/App.js)
+    - [App.tsx](React/src/App.tsx)
+    - [utils.ts](React/src/utils.ts)
 - **Vue**
-    - [App.vue](Vue/src/App.vue)
-- **ASP.Net Core**    
-    - [Index.cshtml](ASP.NET Core/MyApplication/Views/Home/Index.cshtml)
+    - [components/FormContent.vue](Vue/src/components/FormContent.vue)
+    - [components/SubjectEditor.vue](Vue/src/components/SubjectEditor.vue)
+    - [utils.ts](Vue/src/utils.ts)
+- **ASP.Net Core**
+    - [Index.cshtml](ASP.NET Core/Views/Home/Index.cshtml)
+    - [SampleDataController.cs](ASP.NET Core/Controllers/SampleDataController.cs)
+    - [SampleData.cs](ASP.NET Core/Models/SampleData.cs)
 
 ## Documentation
 

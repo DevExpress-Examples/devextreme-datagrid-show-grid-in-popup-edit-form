@@ -1,4 +1,13 @@
-.main {
-  margin: 50px;
-  width: 90vw;
+#app-container {
+  width: 900px;
+  margin: 24px auto;
+}
+
+#data-grid-demo {
+  padding: 16px;
+  border: 1px solid #d3d3d3;
+}
+
+#subject-grid {
+  margin-top: 12px;
 }

@@ -1,4 +1,11 @@
-.default-style {
-  margin: 50px;
-  width: 90vw;
+#app-container {
+  width: 900px;
+  position: relative;
+  padding: 20px;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+}
+
+#grid-container {
+  width: 100%;
 }

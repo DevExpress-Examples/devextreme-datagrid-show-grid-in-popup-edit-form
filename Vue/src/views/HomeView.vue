@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import HomeContent from '../components/HomeContent.vue';
+import FormContent from '../components/FormContent.vue';
 </script>
 
 <template>
-  <HomeContent text="Count"/>
+  <FormContent/>
 </template>
 
