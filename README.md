@@ -25,9 +25,9 @@ This example illustrates how to show DataGrid in the Popup Edit Form and impleme
     - [components/SubjectEditor.vue](Vue/src/components/SubjectEditor.vue)
     - [utils.ts](Vue/src/utils.ts)
 - **ASP.Net Core**
-    - [Index.cshtml](ASP.NET Core/Views/Home/Index.cshtml)
-    - [SampleDataController.cs](ASP.NET Core/Controllers/SampleDataController.cs)
-    - [SampleData.cs](ASP.NET Core/Models/SampleData.cs)
+    - [Index.cshtml](ASP.NET%20Core/Views/Home/Index.cshtml)
+    - [SampleDataController.cs](ASP.NET%20Core/Controllers/SampleDataController.cs)
+    - [SampleData.cs](ASP.NET%20Core/Models/SampleData.cs)
 
 ## Documentation
 

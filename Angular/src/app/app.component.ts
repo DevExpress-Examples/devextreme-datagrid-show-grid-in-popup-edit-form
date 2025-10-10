@@ -160,7 +160,7 @@ export class AppComponent {
       return;
     }
 
-  const updateChange: DataChange<Employee, number> = {
+    const updateChange: DataChange<Employee, number> = {
       data: {
         ID: this.rowData.key,
         Name: this.rowData.name ?? '',
