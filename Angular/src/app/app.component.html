@@ -1,76 +1,90 @@
-<dx-data-grid #mainGrid
-              [dataSource]="dataSource"
-              keyExpr="ID"
-              [showBorders]="true"
-              (onEditorPreparing)="onEditorPreparing($event)"
-              (onEditingStart)="onEditingStart($event)"
-              (onInitNewRow)="onInitNewRow($event)"
-              (onSaving)="onSaving($event)">
-  
-  <dxo-editing mode="popup"
-               [allowUpdating]="true"
-               [allowAdding]="true"
-               [allowDeleting]="true">
-    <dxo-popup [showTitle]="true"
-               [width]="800"
-               [height]="500"
-               (onContentReady)="onPopupContentReady($event)">
+<dx-data-grid
+  #mainGrid
+  [dataSource]="dataSource"
+  keyExpr="ID"
+  [showBorders]="true"
+  (onEditorPreparing)="onEditorPreparing($event)"
+  (onEditingStart)="onEditingStart($event)"
+  (onInitNewRow)="onInitNewRow($event)"
+  (onSaving)="onSaving($event)"
+>
+  <dxo-editing
+    mode="popup"
+    [allowUpdating]="true"
+    [allowAdding]="true"
+    [allowDeleting]="true"
+  >
+    <dxo-popup
+      [showTitle]="true"
+      [width]="800"
+      [height]="500"
+      (onContentReady)="onPopupContentReady($event)"
+    >
     </dxo-popup>
     <dxo-form [colCount]="1">
-      <dxi-item dataField="StudentID"
-                [colSpan]="2">
-        <dxi-validation-rule type="required" message="Student Name is required!"></dxi-validation-rule>
+      <dxi-item dataField="StudentID" [colSpan]="2">
+        <dxi-validation-rule
+          type="required"
+          message="Student Name is required!"
+        ></dxi-validation-rule>
       </dxi-item>
-      <dxi-item dataField="Subjects"
-                [colSpan]="2">
-      </dxi-item>
+      <dxi-item dataField="Subjects" [colSpan]="2"> </dxi-item>
     </dxo-form>
   </dxo-editing>
 
-  <dxi-column dataField="StudentID"
-              caption="Student Name">
-    <dxo-lookup [dataSource]="students"
-                valueExpr="ID"
-                displayExpr="Name"
-                [allowClearing]="true">
+  <dxi-column dataField="StudentID" caption="Student Name">
+    <dxo-lookup
+      [dataSource]="students"
+      valueExpr="ID"
+      displayExpr="Name"
+      [allowClearing]="true"
+    >
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column dataField="Subjects"
-              [customizeText]="customizeText"
-              editCellTemplate="subjectEditor">
+  <dxi-column
+    dataField="Subjects"
+    [customizeText]="customizeText"
+    editCellTemplate="subjectEditor"
+  >
   </dxi-column>
 
   <div *dxTemplate="let cellInfo of 'subjectEditor'">
-    <dx-data-grid [dataSource]="subjects"
-                  keyExpr="Code"
-                  [height]="300"
-                  (onEditingStart)="onSubjectEditingStart($event)"
-                  (onRowValidating)="onSubjectRowValidating($event)"
-                  (onSaved)="onSubjectSaved($event)">
-      
-      <dxo-editing [allowAdding]="true"
-                   [allowUpdating]="true"
-                   [allowDeleting]="true">
+    <dx-data-grid
+      [dataSource]="subjects"
+      keyExpr="Code"
+      [height]="300"
+      (onEditingStart)="onSubjectEditingStart($event)"
+      (onRowValidating)="onSubjectRowValidating($event)"
+      (onSaved)="onSubjectSaved($event)"
+    >
+      <dxo-editing
+        [allowAdding]="true"
+        [allowUpdating]="true"
+        [allowDeleting]="true"
+      >
       </dxo-editing>
-      
+
       <dxi-column dataField="Code">
         <dxi-validation-rule type="required"></dxi-validation-rule>
       </dxi-column>
-      
+
       <dxi-column dataField="Name">
         <dxi-validation-rule type="required"></dxi-validation-rule>
       </dxi-column>
-      
+
       <dxi-column dataField="Units">
-        <dxi-validation-rule type="required" message="Units is required"></dxi-validation-rule>
-        <dxi-validation-rule type="pattern" 
-                            pattern="^[1-9]{1}$" 
-                            message="Units must be more than 1 and less than 9">
+        <dxi-validation-rule
+          type="required"
+          message="Units is required"
+        ></dxi-validation-rule>
+        <dxi-validation-rule
+          type="pattern"
+          pattern="^[1-9]{1}$"
+          message="Units must be more than 1 and less than 9"
+        >
         </dxi-validation-rule>
       </dxi-column>
     </dx-data-grid>
   </div>
 </dx-data-grid>
-
-

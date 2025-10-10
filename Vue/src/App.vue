@@ -1,16 +1,16 @@
 <template>
-  <DxDataGrid 
-    :data-source="dataSource" 
-    key-expr="ID" 
-    :show-borders="true" 
+  <DxDataGrid
+    :data-source="dataSource"
+    key-expr="ID"
+    :show-borders="true"
     :on-saving="onSaving"
     :on-editing-start="onEditingStart"
     :on-editor-preparing="onEditorPreparing"
     :on-init-new-row="onInitNewRow"
     ref="mainGrid"
   >
-    <DxColumn 
-      data-field="StudentID" 
+    <DxColumn
+      data-field="StudentID"
       caption="Student Name"
       :width="200"
     >
@@ -20,9 +20,9 @@
         display-expr="Name"
         :allow-clearing="true"
       />
-      <DxRequiredRule message="Student Name is required!" />
+      <DxRequiredRule message="Student Name is required!"/>
     </DxColumn>
-    
+
     <DxColumn
       data-field="Subjects"
       caption="Subjects"
@@ -37,10 +37,10 @@
       :allow-updating="true"
       :allow-deleting="true"
     >
-      <DxPopup 
-        :show-title="true" 
-        title="Student Subjects" 
-        :width="800" 
+      <DxPopup
+        :show-title="true"
+        title="Student Subjects"
+        :width="800"
         :height="460"
         :on-content-ready="onPopupContentReady"
       >
@@ -59,8 +59,14 @@
       </DxPopup>
 
       <DxForm :col-count="2">
-        <DxItem data-field="StudentID" :col-span="2" />
-        <DxItem data-field="Subjects" :col-span="2" />
+        <DxItem
+          data-field="StudentID"
+          :col-span="2"
+        />
+        <DxItem
+          data-field="Subjects"
+          :col-span="2"
+        />
       </DxForm>
     </DxEditing>
 
@@ -86,9 +92,9 @@ import DxDataGrid, {
   DxLookup,
   DxToolbarItem,
   DxItem
-} from "devextreme-vue/data-grid";
-import { students, studentSubjects, type Student, type Subject, type StudentSubject } from "./data";
-import SubjectsEditorComponent from "./components/SubjectsEditorComponent.vue";
+} from 'devextreme-vue/data-grid';
+import { students, studentSubjects, type Student, type Subject, type StudentSubject } from './data';
+import SubjectsEditorComponent from './components/SubjectsEditorComponent.vue';
 
 const dataSource = ref<StudentSubject[]>(studentSubjects);
 const studentsData = ref<Student[]>(students);
@@ -99,21 +105,21 @@ const editingKey = ref<any>(null);
 const mainGrid = ref<any>(null);
 
 const saveButtonOptions = reactive({
-  text: "Save",
-  type: "default" as const,
+  text: 'Save',
+  type: 'default' as const,
   disabled: false,
   onClick: () => saveMainGrid()
 });
 
 const cancelButtonOptions = reactive({
-  text: "Cancel",
+  text: 'Cancel',
   onClick: () => cancelMainGrid()
 });
 
 // Use any for DevExtreme event types to avoid complex type matching
 const subjectsCellTemplate = (container: HTMLElement, options: any) => {
   if (options.value && options.value.length > 0) {
-    const text = options.value.map((subject: Subject) => subject.Name).join(", ");
+    const text = options.value.map((subject: Subject) => subject.Name).join(', ');
     container.textContent = text;
   }
 };
@@ -159,7 +165,7 @@ const onNestedSaved = (e: any) => {
 
 const updateSaveButtonState = (disabled: boolean) => {
   if (popupInstance.value) {
-    popupInstance.value.option("toolbarItems[0].disabled", disabled);
+    popupInstance.value.option('toolbarItems[0].disabled', disabled);
   }
 };
 
@@ -183,7 +189,7 @@ const onSaving = (e: any) => {
   e.changes.push({
     data: { Subjects: currentSubjects.value },
     key: editingKey.value,
-    type: "update"
+    type: 'update'
   });
 };
 </script>

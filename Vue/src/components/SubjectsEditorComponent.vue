@@ -8,17 +8,28 @@
     :on-row-validating="handleRowValidating"
     :on-saved="handleSaved"
   >
-    <DxColumn data-field="Code" caption="Code" :width="120">
-      <DxRequiredRule />
+    <DxColumn
+      data-field="Code"
+      caption="Code"
+      :width="120"
+    >
+      <DxRequiredRule/>
     </DxColumn>
-    <DxColumn data-field="Name" caption="Name">
-      <DxRequiredRule />
+    <DxColumn
+      data-field="Name"
+      caption="Name"
+    >
+      <DxRequiredRule/>
     </DxColumn>
-    <DxColumn data-field="Units" caption="Units" :width="100">
-      <DxRequiredRule message="Units is required" />
-      <DxPatternRule 
-        pattern="^[1-9]{1}$" 
-        message="Units must be more than 1 and less than 9" 
+    <DxColumn
+      data-field="Units"
+      caption="Units"
+      :width="100"
+    >
+      <DxRequiredRule message="Units is required"/>
+      <DxPatternRule
+        pattern="^[1-9]{1}$"
+        message="Units must be more than 1 and less than 9"
       />
     </DxColumn>
 
@@ -31,15 +42,16 @@
   </DxDataGrid>
 </template>
 <script setup lang="ts">
-import { 
-  DxDataGrid, 
-  DxColumn, 
-  DxEditing, 
-  DxRequiredRule, 
-  DxPatternRule 
-} from "devextreme-vue/data-grid";
-import type { Subject } from "../data";
+import {
+  DxDataGrid,
+  DxColumn,
+  DxEditing,
+  DxRequiredRule,
+  DxPatternRule
+} from 'devextreme-vue/data-grid';
+import type { Subject } from '../data';
 
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 interface Props {
   currentSubjects: Subject[];
   onSubjectsChange: (subjects: Subject[]) => void;
@@ -47,6 +59,7 @@ interface Props {
   onRowValidating: (e: { isValid: boolean }) => void;
   onSaved: (e: { component: { getDataSource: () => { items: () => Subject[] } } }) => void;
 }
+/* eslint-enable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 const props = withDefaults(defineProps<Props>(), {
   currentSubjects: () => [],
