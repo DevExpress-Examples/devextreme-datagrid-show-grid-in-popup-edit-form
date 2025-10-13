@@ -1,81 +1,96 @@
 import { Injectable } from '@angular/core';
-import { Employee } from './app.types';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AppService {
-  private readonly employees: Employee[] = [
-    {
-      ID: 1,
-      Name: 'John',
-      Subjects: [
-        {
-          SubjectCode: 'Math101',
-          SubjectName: 'Math 1',
-          Section: 'Dev1-1',
-        },
-        {
-          SubjectCode: 'Eng101',
-          SubjectName: 'English 1',
-          Section: 'Dev1-2',
-        },
-      ],
-    },
-    {
-      ID: 2,
-      Name: 'Olivia',
-      Subjects: [
-        {
-          SubjectCode: 'Prog101',
-          SubjectName: 'Programming 1',
-          Section: 'Dev1-2',
-        },
-        {
-          SubjectCode: 'Dbms101',
-          SubjectName: 'Database Management 1',
-          Section: 'Dev1-1',
-        },
-      ],
-    },
-    {
-      ID: 3,
-      Name: 'Robert',
-      Subjects: [
-        {
-          SubjectCode: 'Math101',
-          SubjectName: 'Math 1',
-          Section: 'Dev1-1',
-        },
-        {
-          SubjectCode: 'Prog101',
-          SubjectName: 'Programming 1',
-          Section: 'Dev1-2',
-        },
-      ],
-    },
-    {
-      ID: 4,
-      Name: 'Greta',
-      Subjects: [
-        {
-          SubjectCode: 'Dbms101',
-          SubjectName: 'Database Management 1',
-          Section: 'Dev1-2',
-        },
-        {
-          SubjectCode: 'Eng101',
-          SubjectName: 'English 1',
-          Section: 'Dev1-2',
-        },
-      ],
-    },
-  ];
+export interface Student {
+  ID: number;
+  Name: string;
+}
 
-  getEmployees(): Employee[] {
-    return this.employees.map((employee) => ({
-      ...employee,
-      Subjects: [...employee.Subjects],
-    }));
+export interface Subject {
+  Code: string;
+  Name: string;
+  Units: number;
+}
+
+export interface StudentSubject {
+  ID: number;
+  StudentID: number;
+  Subjects: Subject[];
+}
+
+const students: Student[] = [
+  {
+    ID: 1,
+    Name: 'Jose Mari Gabon',
+  },
+  {
+    ID: 2,
+    Name: 'Kurt Ronald Tan',
+  },
+  {
+    ID: 3,
+    Name: 'Michael Mendiola',
+  },
+  {
+    ID: 4,
+    Name: 'Zach Familara',
+  },
+  {
+    ID: 5,
+    Name: 'Alexandra Marie Morano',
+  },
+  {
+    ID: 6,
+    Name: 'Elmar Jo Simpas',
+  },
+];
+
+const studentSubjects: StudentSubject[] = [
+  {
+    ID: 1,
+    StudentID: 1,
+    Subjects: [],
+  },
+  {
+    ID: 2,
+    StudentID: 3,
+    Subjects: [
+      {
+        Name: 'Team Sports',
+        Code: 'PE4',
+        Units: 2,
+      },
+      {
+        Name: 'Integral Calculus',
+        Code: 'MATH224',
+        Units: 4,
+      },
+    ],
+  },
+  {
+    ID: 3,
+    StudentID: 4,
+    Subjects: [
+      {
+        Name: 'Computer Workshop 4',
+        Code: 'COE222',
+        Units: 2,
+      },
+      {
+        Name: 'Philippine Literature',
+        Code: 'LIT1',
+        Units: 3,
+      },
+    ],
+  },
+];
+
+@Injectable()
+export class Service {
+  getStudents(): Student[] {
+    return students;
+  }
+
+  getStudentSubjects(): StudentSubject[] {
+    return studentSubjects;
   }
 }

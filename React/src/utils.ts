@@ -1,134 +1,54 @@
-import type { DataChange } from 'devextreme/ui/data_grid';
-import type { Employee } from './types';
+import applyChanges from 'devextreme/data/apply_changes';
 
-export interface GridState {
-  data: Employee[];
-  changes: DataChange<Employee, number>[];
-  editRowKey: number | null;
-  isValid: boolean;
-}
+function reducer(state: any, { type, payload }: { type: string; payload: any }): any {
+  let newData: any = null;
+  switch (type) {
+    case 'Saving':
+      if (!payload.data) payload.data = {};
 
-export type GridAction =
-  | { type: 'Saving'; payload: { change: DataChange<Employee, number>; key: keyof Employee } }
-  | { type: 'Set_Changes'; payload: { changes: DataChange<Employee, number>[]; isValid: boolean } }
-  | { type: 'Set_Key'; payload: number | null }
-  | { type: 'Set_Valid'; payload: boolean };
+      newData = applyChanges(state.data, [payload.data], { keyExpr: payload.key });
 
-export type ChangeLike =
-  | (Pick<DataChange<Employee, number>, 'type' | 'data'> & { isNewRow?: boolean })
-  | undefined;
-
-export function reducer(state: GridState, action: GridAction): GridState {
-  switch (action.type) {
-    case 'Saving': {
-      const { change, key } = action.payload;
-      const updatedData = applyGridChange(state.data, change, key);
-      return {
-        data: updatedData,
-        changes: [],
-        editRowKey: null,
-        isValid: false,
-      };
-    }
-    case 'Set_Changes':
       return {
         ...state,
-        changes: action.payload.changes,
-        isValid: action.payload.isValid,
+        data: newData,
+        detailData: null,
+        changes: [],
+        editRowKey: null,
+      };
+    case 'Set_Changes':
+
+      return {
+        ...state,
+        changes: payload.changes,
+        isValid: payload.isValid,
       };
     case 'Set_Key':
       return {
         ...state,
-        editRowKey: action.payload,
+        editRowKey: payload,
       };
     case 'Set_Valid':
       return {
         ...state,
-        isValid: action.payload,
+        isValid: payload,
       };
     default:
       return state;
   }
 }
 
-export function checkIsValid(change: ChangeLike): boolean {
-  if (!change) {
-    return false;
+function checkIsValid(row: any): boolean {
+  let result = true;
+  if (row.type === 'insert' || row.isNewRow === true) {
+    result = row.data.Name && row.data.Name !== '' && row.data.Subjects && row.data.Subjects.length !== 0 && Object.prototype.hasOwnProperty.call(row.data, 'Name');
+  } else if (row.type === 'update') {
+    if (Object.prototype.hasOwnProperty.call(row.data, 'Name')) result = row.data.Name !== '';
+    if (Object.prototype.hasOwnProperty.call(row.data, 'Subjects')) result = result && row.data.Subjects.length !== 0;
   }
-
-  const changeData = (change.data ?? {}) as Partial<Employee>;
-  const hasNameProp = Object.prototype.hasOwnProperty.call(changeData, 'Name');
-  const hasSubjectsProp = Object.prototype.hasOwnProperty.call(changeData, 'Subjects');
-  const nameValue = (changeData.Name ?? '').toString().trim();
-  const subjectsValue = Array.isArray(changeData.Subjects) ? changeData.Subjects : [];
-
-  if (change.type === 'insert' || change.isNewRow === true) {
-    return hasNameProp && nameValue !== '' && subjectsValue.length > 0;
-  }
-
-  if (change.type === 'update') {
-    let result = true;
-
-    if (hasNameProp) {
-      result = nameValue !== '';
-    }
-
-    if (hasSubjectsProp) {
-      result = result && subjectsValue.length > 0;
-    }
-
-    return result;
-  }
-
-  return true;
+  return result;
 }
 
-function applyGridChange(
-  data: Employee[],
-  change: DataChange<Employee, number>,
-  keyField: keyof Employee,
-): Employee[] {
-  const keyValue = change.key as Employee[typeof keyField] | undefined;
-
-  if (change.type === 'insert') {
-    const changeData = (change.data ?? {}) as Partial<Employee>;
-    const rawKey = changeData[keyField];
-    const generatedKey = typeof rawKey === 'number'
-      ? rawKey
-      : Math.max(0, ...data.map((employee) => employee.ID)) + 1;
-
-    return [
-      ...data,
-      {
-        ID: generatedKey,
-        Name: changeData.Name ?? '',
-        Subjects: (changeData.Subjects ?? []).map((subject) => ({ ...subject })),
-      },
-    ];
-  }
-
-  if (change.type === 'update' && typeof keyValue === 'number') {
-    return data.map((employee) => {
-      if (employee[keyField] !== keyValue) {
-        return employee;
-      }
-
-      const changeData = (change.data ?? {}) as Partial<Employee>;
-      const nextSubjects = (changeData.Subjects ?? employee.Subjects).map((subject) => ({
-        ...subject,
-      }));
-
-      return {
-        ...employee,
-        ...changeData,
-        Subjects: nextSubjects,
-      };
-    });
-  }
-
-  if (change.type === 'remove' && typeof keyValue === 'number') {
-    return data.filter((employee) => employee[keyField] !== keyValue);
-  }
-
-  return data;
-}
+export {
+  reducer,
+  checkIsValid,
+};

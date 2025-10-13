@@ -1,10 +1,14 @@
 $(() => {
   let canBeSaved;
   let popupInstance;
+  const ctr = 0;
   let key;
+  let currentSubjects;
   let subjects;
+  let subjectsSaved;
+  const changes = [];
 
-  const dataGrid = $('#data-grid').dxDataGrid({
+  $('#dataGrid').dxDataGrid({
     dataSource: studentSubject,
     keyExpr: 'ID',
     columns: [
@@ -23,7 +27,7 @@ $(() => {
         cellTemplate(container, options) {
           let text;
           if (options.value) {
-            text = options.value.reduce((string, obj) => `${string}${obj.Name}, `, '').slice(0, -2);
+            text = options.value.reduce((string, obj) => `${string + obj.Name}, `, '').slice(0, -2);
             container.text(text);
           }
         },
@@ -89,24 +93,19 @@ $(() => {
       allowUpdating: true,
 
       form: {
-        items: [
-          {
-            dataField: 'StudentID',
-            colCount: 1,
-            colSpan: 2,
-            validationRules: [
-              {
-                type: 'required',
-                message: 'Student Name is required!',
-              },
-            ],
-          },
-          {
-            dataField: 'Subjects',
-            colCount: 1,
-            colSpan: 2,
-          },
-        ],
+        items: [{
+          dataField: 'StudentID',
+          colCount: 1,
+          colSpan: 2,
+          validationRules: [{
+            type: 'required',
+            message: 'Student Name is required!',
+          }],
+        }, {
+          dataField: 'Subjects',
+          colCount: 1,
+          colSpan: 2,
+        }],
       },
       popup: {
         onContentReady(e) {
@@ -136,5 +135,5 @@ $(() => {
       }
       e.changes.push({ data: { Subjects: subjects }, key, type: 'update' });
     },
-  }).dxDataGrid('instance');
+  });
 });

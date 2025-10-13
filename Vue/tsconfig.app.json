@@ -5,12 +5,11 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
+    "allowJs": true,
     // Workaround for https://github.com/vuejs/tsconfig/issues/6
     "preserveValueImports": false,
     "importsNotUsedAsValues": "remove",
-    "verbatimModuleSyntax": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "verbatimModuleSyntax": false,
     "paths": {
       "@/*": ["./src/*"]
     }
