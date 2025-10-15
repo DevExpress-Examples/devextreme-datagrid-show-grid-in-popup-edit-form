@@ -4,7 +4,7 @@ import React, {
 import DataGrid, {
   Column, Editing, Popup, Form, ToolbarItem, ValidationRule,
   type DataGridRef,
-  type DataGridTypes
+  type DataGridTypes,
 } from 'devextreme-react/data-grid';
 import Button from 'devextreme-react/button';
 import { getStudentRows, getStudents } from '../sevices/employee';
@@ -56,7 +56,7 @@ export function HomeComponent(): JSX.Element {
     setSaveDisabled(copy.length === 0 && !e.data?.ID);
   }, []);
 
-  const onInitNewRow = useCallback((_e: DataGridTypes.InitNewRowEvent) => {
+  const onInitNewRow = useCallback(() => {
     setEditingKey(null);
     editingSubjectsRef.current = [];
     setSaveDisabled(true);
@@ -74,7 +74,7 @@ export function HomeComponent(): JSX.Element {
     gridRef,
   }), [setSubjectsRefCallback, saveDisabled, setSaveDisabled]);
 
-  const onSaved = useCallback((_e: DataGridTypes.SavedEvent) => {
+  const onSaved = useCallback(() => {
     const gridWidget = gridRef.current?.instance?.();
     const dsItems = gridWidget?.option('dataSource');
     if (Array.isArray(dsItems)) {
@@ -172,7 +172,7 @@ function SubjectsEditCell(): JSX.Element | null {
     setSaveDisabled(shouldDisable);
   }, [setSaveDisabled, isEditing]);
 
-  const onEditingStart = useCallback((_e: DataGridTypes.EditingStartEvent) => {
+  const onEditingStart = useCallback(() => {
     setIsEditing(true);
     setSaveDisabled(true);
   }, [setSaveDisabled]);

@@ -44,11 +44,11 @@ export class AppComponent {
   }
 
   onEditingStart(e: DxDataGridTypes.EditingStartEvent): void {
-    this.subjects = [...e.data.Subjects || []];
+    this.subjects = [...e.data.Subjects ?? []];
   }
 
   onEditorPreparing(e: DxDataGridTypes.EditorPreparingEvent): void {
-    this.canBeSaved = e.row?.isNewRow || false;
+    this.canBeSaved = e.row?.isNewRow ?? false;
     this.key = e.row?.key;
   }
 

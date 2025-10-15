@@ -8,7 +8,17 @@ interface StateShape {
   isValid?: boolean;
 }
 
-type Action = 
+interface RowData {
+  data: {
+    [key: string]: any;
+    Name?: string;
+    Subjects?: any[];
+  };
+  type?: 'insert' | 'update' | 'remove';
+  isNewRow?: boolean;
+}
+
+type Action =
   | { type: 'Saving'; payload: { data?: any; key?: string } }
   | { type: 'Set_Changes'; payload: { changes: any[]; isValid: boolean } }
   | { type: 'Set_Key'; payload: string | number | null }
@@ -16,7 +26,7 @@ type Action =
 
 function reducer(state: StateShape, action: Action): StateShape {
   switch (action.type) {
-    case 'Saving':
+    case 'Saving': {
       if (!action.payload.data) action.payload.data = {};
 
       const newData = applyChanges(state.data, [action.payload.data], { keyExpr: action.payload.key });
@@ -28,6 +38,7 @@ function reducer(state: StateShape, action: Action): StateShape {
         changes: [],
         editRowKey: null,
       };
+    }
     case 'Set_Changes':
       return {
         ...state,
@@ -49,16 +60,6 @@ function reducer(state: StateShape, action: Action): StateShape {
   }
 }
 
-interface RowData {
-  type?: 'insert' | 'update' | 'remove';
-  isNewRow?: boolean;
-  data: {
-    Name?: string;
-    Subjects?: any[];
-    [key: string]: any;
-  };
-}
-
 function checkIsValid(row: RowData): boolean {
   let result = true;
   if (row.type === 'insert' || row.isNewRow === true) {
@@ -70,7 +71,4 @@ function checkIsValid(row: RowData): boolean {
   return result;
 }
 
-export {
-  reducer,
-  checkIsValid,
-};
+export { reducer, checkIsValid };

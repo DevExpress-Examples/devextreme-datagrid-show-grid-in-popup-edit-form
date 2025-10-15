@@ -100,10 +100,12 @@ import SubjectsEditorComponent from './components/SubjectsEditorComponent.vue';
 const dataSource = ref<StudentSubject[]>(studentSubjects);
 const studentsData = ref<Student[]>(students);
 const currentSubjects = ref<Subject[]>([]);
-const popupInstance = ref<any>(null); // DevExtreme popup component instance - keeping as any due to complex DX component typing
+// DevExtreme popup component instance - keeping as any due to complex DX component typing
+const popupInstance = ref<any>(null);
 const canBeSaved = ref<boolean>(false);
 const editingKey = ref<string | number | null>(null);
-const mainGrid = ref<any>(null); // DevExtreme DataGrid component instance - keeping as any due to complex DX component typing
+// DevExtreme DataGrid component instance - keeping as any due to complex DX component typing
+const mainGrid = ref<any>(null);
 
 const saveButtonOptions = reactive({
   text: 'Save',
@@ -117,7 +119,10 @@ const cancelButtonOptions = reactive({
   onClick: () => cancelMainGrid()
 });
 
-const subjectsCellTemplate = (container: HTMLElement, options: { value?: Subject[]; target?: string }) => {
+const subjectsCellTemplate = (
+  container: HTMLElement,
+  options: { value?: Subject[]; target?: string }
+) => {
   if (options.value && options.value.length > 0) {
     const text = options.value.map((subject: Subject) => subject.Name).join(', ');
     container.textContent = text;
@@ -125,15 +130,15 @@ const subjectsCellTemplate = (container: HTMLElement, options: { value?: Subject
 };
 
 const onEditingStart = (e: DxDataGridTypes.EditingStartEvent) => {
-  currentSubjects.value = [...(e.data.Subjects || [])];
+  currentSubjects.value = [...(e.data.Subjects ?? [])];
 };
 
 const onEditorPreparing = (e: DxDataGridTypes.EditorPreparingEvent) => {
-  canBeSaved.value = e.row?.isNewRow || false;
+  canBeSaved.value = e.row?.isNewRow ?? false;
   editingKey.value = e.row?.key;
 };
 
-const onInitNewRow = (_e: DxDataGridTypes.InitNewRowEvent) => {
+const onInitNewRow = () => {
   currentSubjects.value = [];
 };
 
@@ -149,7 +154,7 @@ const onSubjectsChange = (subjects: Subject[]) => {
   currentSubjects.value = subjects;
 };
 
-const onNestedEditingStart = (_e: DxDataGridTypes.EditingStartEvent) => {
+const onNestedEditingStart = () => {
   updateSaveButtonState(true);
 };
 
@@ -157,7 +162,9 @@ const onNestedRowValidating = (e: { isValid: boolean }) => {
   updateSaveButtonState(!e.isValid);
 };
 
-const onNestedSaved = (e: { component: { getDataSource: () => { items: () => Subject[] } } }) => {
+const onNestedSaved = (
+  e: { component: { getDataSource: () => { items: () => Subject[] } } }
+) => {
   currentSubjects.value = e.component.getDataSource().items();
   const hasSubjects = currentSubjects.value.length > 0;
   updateSaveButtonState(!hasSubjects);
