@@ -47,7 +47,8 @@ import {
   DxColumn,
   DxEditing,
   DxRequiredRule,
-  DxPatternRule
+  DxPatternRule,
+  type DxDataGridTypes
 } from 'devextreme-vue/data-grid';
 import type { Subject } from '../data';
 
@@ -55,7 +56,7 @@ import type { Subject } from '../data';
 interface Props {
   currentSubjects: Subject[];
   onSubjectsChange: (subjects: Subject[]) => void;
-  onEditingStart: (e: any) => void;
+  onEditingStart: (e: DxDataGridTypes.EditingStartEvent) => void;
   onRowValidating: (e: { isValid: boolean }) => void;
   onSaved: (e: { component: { getDataSource: () => { items: () => Subject[] } } }) => void;
 }
@@ -69,15 +70,15 @@ const props = withDefaults(defineProps<Props>(), {
   onSaved: () => () => {}
 });
 
-const handleEditingStart = (e: any) => {
+const handleEditingStart = (e: DxDataGridTypes.EditingStartEvent) => {
   props.onEditingStart(e);
 };
 
-const handleRowValidating = (e: { isValid: boolean }) => {
-  props.onRowValidating(e);
+const handleRowValidating = (e: DxDataGridTypes.RowValidatingEvent) => {
+  props.onRowValidating({ isValid: e.isValid });
 };
 
-const handleSaved = (e: { component: { getDataSource: () => { items: () => Subject[] } } }) => {
-  props.onSaved(e);
+const handleSaved = (e: DxDataGridTypes.SavedEvent) => {
+  props.onSaved({ component: e.component });
 };
 </script>

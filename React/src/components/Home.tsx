@@ -3,6 +3,8 @@ import React, {
 } from 'react';
 import DataGrid, {
   Column, Editing, Popup, Form, ToolbarItem, ValidationRule,
+  type DataGridRef,
+  type DataGridTypes
 } from 'devextreme-react/data-grid';
 import Button from 'devextreme-react/button';
 import { getStudentRows, getStudents } from '../sevices/employee';
@@ -14,17 +16,17 @@ interface EditContextShape {
   setSubjectsRef: (subjects: Subject[]) => void;
   saveDisabled: boolean;
   setSaveDisabled: React.Dispatch<React.SetStateAction<boolean>>;
-  gridRef: React.MutableRefObject<any>;
+  gridRef: React.MutableRefObject<DataGridRef | null>;
 }
 const EditContext = createContext<EditContextShape | null>(null);
 
 export function HomeComponent(): JSX.Element {
-  const gridRef = useRef<any>(null);
+  const gridRef = useRef<DataGridRef>(null);
   const [data, setData] = useState<StudentRow[]>(getStudentRows());
   const [students] = useState<Student[]>(getStudents());
   const editingSubjectsRef = useRef<Subject[]>([]);
   const [saveDisabled, setSaveDisabled] = useState(false);
-  const [editingKey, setEditingKey] = useState<any>(null);
+  const [editingKey, setEditingKey] = useState<string | number | null>(null);
 
   const subjectsCellRender = useCallback(({ data }: { data: StudentRow }): JSX.Element => {
     if (!data.Subjects || data.Subjects.length === 0) return <span />;
@@ -32,7 +34,7 @@ export function HomeComponent(): JSX.Element {
     return <span>{text}</span>;
   }, []);
 
-  const onSaving = useCallback((e: any) => {
+  const onSaving = useCallback((e: DataGridTypes.SavingEvent) => {
     if (!e.changes) return;
     if (e.changes[0]) {
       if (e.changes[0].data) {
@@ -47,14 +49,14 @@ export function HomeComponent(): JSX.Element {
     }
   }, [editingKey]);
 
-  const onEditingStart = useCallback((e: any) => {
+  const onEditingStart = useCallback((e: DataGridTypes.EditingStartEvent) => {
     setEditingKey(e.key);
     const copy = e.data?.Subjects ? JSON.parse(JSON.stringify(e.data.Subjects)) : [];
     editingSubjectsRef.current = copy;
     setSaveDisabled(copy.length === 0 && !e.data?.ID);
   }, []);
 
-  const onInitNewRow = useCallback(() => {
+  const onInitNewRow = useCallback((_e: DataGridTypes.InitNewRowEvent) => {
     setEditingKey(null);
     editingSubjectsRef.current = [];
     setSaveDisabled(true);
@@ -72,7 +74,7 @@ export function HomeComponent(): JSX.Element {
     gridRef,
   }), [setSubjectsRefCallback, saveDisabled, setSaveDisabled]);
 
-  const onSaved = useCallback(() => {
+  const onSaved = useCallback((_e: DataGridTypes.SavedEvent) => {
     const gridWidget = gridRef.current?.instance?.();
     const dsItems = gridWidget?.option('dataSource');
     if (Array.isArray(dsItems)) {
@@ -158,7 +160,7 @@ function SubjectsEditCell(): JSX.Element | null {
   const { editingSubjectsRef, setSubjectsRef, setSaveDisabled } = ctx;
 
   const dataSourceRef = useRef<Subject[]>([...editingSubjectsRef.current]);
-  const gridRef = useRef<any>(null);
+  const gridRef = useRef<DataGridRef>(null);
   const [isEditing, setIsEditing] = useState(false);
 
   const syncToRef = useCallback((subjects: Subject[]) => {
@@ -170,18 +172,18 @@ function SubjectsEditCell(): JSX.Element | null {
     setSaveDisabled(shouldDisable);
   }, [setSaveDisabled, isEditing]);
 
-  const onEditingStart = useCallback(() => {
+  const onEditingStart = useCallback((_e: DataGridTypes.EditingStartEvent) => {
     setIsEditing(true);
     setSaveDisabled(true);
   }, [setSaveDisabled]);
 
-  const onRowValidating = useCallback((e: any) => {
+  const onRowValidating = useCallback((e: DataGridTypes.RowValidatingEvent) => {
     if (!e.isValid) {
       setSaveDisabled(true);
     }
   }, [setSaveDisabled]);
 
-  const onSaved = useCallback((e: any) => {
+  const onSaved = useCallback((e: DataGridTypes.SavedEvent) => {
     setTimeout(() => {
       const gridInstance = e.component;
       const dataSource = gridInstance.option('dataSource');
