@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { DxDataGridComponent, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import DataSource from 'devextreme/data/data_source';
 import {
   Service, Student, Subject, StudentSubject,
@@ -12,11 +12,11 @@ import {
   providers: [Service],
 })
 export class AppComponent {
-  @ViewChild('mainGrid', { static: false }) mainGrid: any = DxDataGridComponent;
+  @ViewChild('mainGrid', { static: false }) mainGrid!: DxDataGridComponent;
 
   title = 'Student Subjects Management';
 
-  dataSource: any;
+  dataSource: DataSource;
 
   students: Student[] = [];
 
@@ -26,7 +26,7 @@ export class AppComponent {
 
   popupInstance: any;
 
-  key: any;
+  key: string | number | null = null;
 
   constructor(private readonly service: Service) {
     this.students = service.getStudents();
@@ -39,16 +39,16 @@ export class AppComponent {
     });
   }
 
-  onInitNewRow(e: any): void {
+  onInitNewRow(e: DxDataGridTypes.InitNewRowEvent): void {
     this.subjects = [];
   }
 
-  onEditingStart(e: any): void {
-    this.subjects = [...e.data.Subjects || []];
+  onEditingStart(e: DxDataGridTypes.EditingStartEvent): void {
+    this.subjects = [...e.data.Subjects ?? []];
   }
 
-  onEditorPreparing(e: any): void {
-    this.canBeSaved = e.row?.isNewRow || false;
+  onEditorPreparing(e: DxDataGridTypes.EditorPreparingEvent): void {
+    this.canBeSaved = e.row?.isNewRow ?? false;
     this.key = e.row?.key;
   }
 
@@ -60,13 +60,13 @@ export class AppComponent {
     }
   }
 
-  onSubjectEditingStart(e: any): void {
+  onSubjectEditingStart(e: DxDataGridTypes.EditingStartEvent): void {
     if (this.popupInstance) {
       this.popupInstance.option('toolbarItems[0].disabled', true);
     }
   }
 
-  onSubjectRowValidating(e: any): void {
+  onSubjectRowValidating(e: DxDataGridTypes.RowValidatingEvent): void {
     if (this.popupInstance) {
       if (e.isValid) {
         this.popupInstance.option('toolbarItems[0].disabled', false);
@@ -76,7 +76,7 @@ export class AppComponent {
     }
   }
 
-  onSubjectSaved(e: any): void {
+  onSubjectSaved(e: DxDataGridTypes.SavedEvent): void {
     this.subjects = e.component.getDataSource().items();
     if (this.popupInstance) {
       if (this.subjects.length > 0) {
@@ -87,7 +87,7 @@ export class AppComponent {
     }
   }
 
-  onSaving(e: any): void {
+  onSaving(e: DxDataGridTypes.SavingEvent): void {
     if (e.changes[0]) {
       if (e.changes[0].data) {
         e.changes[0].data.Subjects = this.subjects;
@@ -101,9 +101,9 @@ export class AppComponent {
     });
   }
 
-  customizeText = (cellInfo: any): string => {
+  customizeText = (cellInfo: { value?: Subject[]; target?: string }): string => {
     if (cellInfo.value && cellInfo.value.length > 0) {
-      return (cellInfo.value as Subject[]).reduce((text: string, subject: Subject) => `${text}${subject.Name}, `, '').slice(0, -2);
+      return cellInfo.value.reduce((text: string, subject: Subject) => `${text}${subject.Name}, `, '').slice(0, -2);
     }
     return '';
   };
