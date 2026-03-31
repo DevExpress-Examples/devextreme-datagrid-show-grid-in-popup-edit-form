@@ -8,46 +8,47 @@
   (onInitNewRow)="onInitNewRow($event)"
   (onSaving)="onSaving($event)"
 >
-  <dxo-editing
+  <dxo-data-grid-editing
     mode="popup"
     [allowUpdating]="true"
     [allowAdding]="true"
     [allowDeleting]="true"
   >
-    <dxo-popup
+    <dxo-data-grid-popup
       [showTitle]="true"
       [width]="800"
       [height]="500"
       (onContentReady)="onPopupContentReady($event)"
     >
-    </dxo-popup>
-    <dxo-form [colCount]="1">
-      <dxi-item dataField="StudentID" [colSpan]="2">
-        <dxi-validation-rule
+    </dxo-data-grid-popup>
+    <dxo-data-grid-form [colCount]="1">
+      <dxi-data-grid-item dataField="StudentID" [colSpan]="2">
+        <dxi-data-grid-validation-rule
           type="required"
           message="Student Name is required!"
-        ></dxi-validation-rule>
-      </dxi-item>
-      <dxi-item dataField="Subjects" [colSpan]="2"> </dxi-item>
-    </dxo-form>
-  </dxo-editing>
+        ></dxi-data-grid-validation-rule>
+      </dxi-data-grid-item>
+      <dxi-data-grid-item dataField="Subjects" [colSpan]="2">
+      </dxi-data-grid-item>
+    </dxo-data-grid-form>
+  </dxo-data-grid-editing>
 
-  <dxi-column dataField="StudentID" caption="Student Name">
-    <dxo-lookup
+  <dxi-data-grid-column dataField="StudentID" caption="Student Name">
+    <dxo-data-grid-lookup
       [dataSource]="students"
       valueExpr="ID"
       displayExpr="Name"
       [allowClearing]="true"
     >
-    </dxo-lookup>
-  </dxi-column>
+    </dxo-data-grid-lookup>
+  </dxi-data-grid-column>
 
-  <dxi-column
+  <dxi-data-grid-column
     dataField="Subjects"
     [customizeText]="customizeText"
     editCellTemplate="subjectEditor"
   >
-  </dxi-column>
+  </dxi-data-grid-column>
 
   <div *dxTemplate="let cellInfo of 'subjectEditor'">
     <dx-data-grid
@@ -58,33 +59,37 @@
       (onRowValidating)="onSubjectRowValidating($event)"
       (onSaved)="onSubjectSaved($event)"
     >
-      <dxo-editing
+      <dxo-data-grid-editing
         [allowAdding]="true"
         [allowUpdating]="true"
         [allowDeleting]="true"
       >
-      </dxo-editing>
+      </dxo-data-grid-editing>
 
-      <dxi-column dataField="Code">
-        <dxi-validation-rule type="required"></dxi-validation-rule>
-      </dxi-column>
+      <dxi-data-grid-column dataField="Code">
+        <dxi-data-grid-validation-rule
+          type="required"
+        ></dxi-data-grid-validation-rule>
+      </dxi-data-grid-column>
 
-      <dxi-column dataField="Name">
-        <dxi-validation-rule type="required"></dxi-validation-rule>
-      </dxi-column>
+      <dxi-data-grid-column dataField="Name">
+        <dxi-data-grid-validation-rule
+          type="required"
+        ></dxi-data-grid-validation-rule>
+      </dxi-data-grid-column>
 
-      <dxi-column dataField="Units">
-        <dxi-validation-rule
+      <dxi-data-grid-column dataField="Units">
+        <dxi-data-grid-validation-rule
           type="required"
           message="Units is required"
-        ></dxi-validation-rule>
-        <dxi-validation-rule
+        ></dxi-data-grid-validation-rule>
+        <dxi-data-grid-validation-rule
           type="pattern"
           pattern="^[1-9]{1}$"
           message="Units must be more than 1 and less than 9"
         >
-        </dxi-validation-rule>
-      </dxi-column>
+        </dxi-data-grid-validation-rule>
+      </dxi-data-grid-column>
     </dx-data-grid>
   </div>
 </dx-data-grid>

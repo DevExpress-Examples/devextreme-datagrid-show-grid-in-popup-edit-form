@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { DxDataGridComponent, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import DataSource from 'devextreme/data/data_source';
 import {
-  Service, Student, Subject, StudentSubject,
+  Service, Student, Subject,
 } from './app.service';
 
 @Component({
@@ -40,7 +40,7 @@ export class AppComponent {
     });
   }
 
-  onInitNewRow(e: DxDataGridTypes.InitNewRowEvent): void {
+  onInitNewRow(_e: DxDataGridTypes.InitNewRowEvent): void {
     this.subjects = [];
   }
 
@@ -61,7 +61,7 @@ export class AppComponent {
     }
   }
 
-  onSubjectEditingStart(e: DxDataGridTypes.EditingStartEvent): void {
+  onSubjectEditingStart(_e: DxDataGridTypes.EditingStartEvent): void {
     if (this.popupInstance) {
       this.popupInstance.option('toolbarItems[0].disabled', true);
     }
