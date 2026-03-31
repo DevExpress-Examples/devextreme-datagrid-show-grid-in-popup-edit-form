@@ -27,9 +27,9 @@ export function HomeComponent(): JSX.Element {
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [editingKey, setEditingKey] = useState<string | number | null>(null);
 
-  const subjectsCellRender = useCallback(({ data }: { data: StudentRow }): JSX.Element => {
-    if (!data.Subjects || data.Subjects.length === 0) return <span />;
-    const text = data.Subjects.map((s: Subject) => s.Name).join(', ');
+  const subjectsCellRender = useCallback(({ data: rowData }: { data: StudentRow }): JSX.Element => {
+    if (!rowData.Subjects || rowData.Subjects.length === 0) return <span />;
+    const text = rowData.Subjects.map((s: Subject) => s.Name).join(', ');
     return <span>{text}</span>;
   }, []);
 

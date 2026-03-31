@@ -16,6 +16,7 @@ export default [
   {
     rules: {
       'import/prefer-default-export': 'off',
+      'import/extensions': 'off',
     },
   },
   {
@@ -36,6 +37,7 @@ export default [
     files: ['**/*.ts', '**/*.tsx'],
     rules: {
       'react/react-in-jsx-scope': 'off',
+      '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
       'import/no-extraneous-dependencies': ['error', {
         devDependencies: [
           '**/vitest.config.ts',
