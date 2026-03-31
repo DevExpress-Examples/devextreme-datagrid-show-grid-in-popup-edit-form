@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 namespace ASP_NET_Core.Controllers;
 
 [Route("api/[controller]/[action]")]
-[Route("api/[controller]/[action]")]
 public class SampleDataController: Controller {
     [HttpGet]
     public object GetStudents(DataSourceLoadOptions loadOptions) {
