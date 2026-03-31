@@ -9,7 +9,7 @@
     // Workaround for https://github.com/vuejs/tsconfig/issues/6
     "preserveValueImports": false,
     "importsNotUsedAsValues": "remove",
-    "verbatimModuleSyntax": false,
+    "verbatimModuleSyntax": true,
     "paths": {
       "@/*": ["./src/*"]
     }

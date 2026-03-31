@@ -52,7 +52,6 @@ import {
 } from 'devextreme-vue/data-grid';
 import type { Subject } from '../data';
 
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 interface Props {
   currentSubjects: Subject[];
   onSubjectsChange: (subjects: Subject[]) => void;
@@ -60,7 +59,6 @@ interface Props {
   onRowValidating: (e: { isValid: boolean }) => void;
   onSaved: (e: { component: { getDataSource: () => { items: () => Subject[] } } }) => void;
 }
-/* eslint-enable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 const props = withDefaults(defineProps<Props>(), {
   currentSubjects: () => [],
