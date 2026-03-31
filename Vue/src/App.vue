@@ -58,7 +58,7 @@
         />
       </DxPopup>
 
-      <DxForm :col-count="2">
+      <DxForm :col-count="1">
         <DxItem
           data-field="StudentID"
           :col-span="2"
