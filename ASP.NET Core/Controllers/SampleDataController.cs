@@ -8,7 +8,7 @@ using ASP_NET_Core.Models;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ASP_NET_Core.Controllers;
 
@@ -26,9 +26,7 @@ public class SampleDataController: Controller {
 
     [HttpPost]
     public IActionResult InsertStudent(string values) {
-        var newStudent = new Student();
-        JsonConvert.PopulateObject(values, newStudent);
-
+        var newStudent = JsonSerializer.Deserialize<Student>(values)!;
         newStudent.ID = SampleData.Students.Count() + 1;
         SampleData.Students.Add(newStudent);
 
@@ -37,9 +35,7 @@ public class SampleDataController: Controller {
 
     [HttpPost]
     public IActionResult InsertStudentSubject(string values) {
-        var newStudentSubject = new StudentSubject();
-        JsonConvert.PopulateObject(values, newStudentSubject);
-
+        var newStudentSubject = JsonSerializer.Deserialize<StudentSubject>(values)!;
         newStudentSubject.ID = SampleData.StudentSubjects.Count() + 1;
         SampleData.StudentSubjects.Add(newStudentSubject);
 
@@ -49,7 +45,7 @@ public class SampleDataController: Controller {
     [HttpPut]
     public IActionResult UpdateStudent(int key, string values) {
         var student = SampleData.Students.First(s => s.ID == key);
-        JsonConvert.PopulateObject(values, student);
+        PopulateObject(values, student);
 
         return Ok(student);
     }
@@ -57,9 +53,26 @@ public class SampleDataController: Controller {
     [HttpPut]
     public IActionResult UpdateStudentSubject(int key, string values) {
         var studentSubject = SampleData.StudentSubjects.First(s => s.ID == key);
-        JsonConvert.PopulateObject(values, studentSubject);
+        PopulateObject(values, studentSubject);
 
         return Ok(studentSubject);
+    }
+
+    private static void PopulateObject<T>(string json, T target) {
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var existing = JsonSerializer.Serialize(target, options);
+        using var existingDoc = JsonDocument.Parse(existing);
+        using var changesDoc = JsonDocument.Parse(json);
+        var merged = new Dictionary<string, JsonElement>();
+        foreach (var prop in existingDoc.RootElement.EnumerateObject())
+            merged[prop.Name] = prop.Value;
+        foreach (var prop in changesDoc.RootElement.EnumerateObject())
+            merged[prop.Name] = prop.Value;
+        var mergedJson = JsonSerializer.Serialize(merged, options);
+        JsonSerializer.Deserialize(mergedJson, target!.GetType(), options);
+        var updated = (T)JsonSerializer.Deserialize(mergedJson, target!.GetType(), options)!;
+        foreach (var prop in typeof(T).GetProperties())
+            prop.SetValue(target, prop.GetValue(updated));
     }
 
     [HttpDelete]
