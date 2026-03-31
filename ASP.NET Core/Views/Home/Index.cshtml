@@ -16,7 +16,7 @@
             .Caption("Student Name")
             .Lookup(lookup => lookup
                 .AllowClearing(true)
-                .DataSource(d => d.Mvc().Controller("SampleData").LoadAction("GetStudents"))
+                .DataSource(d => d.Mvc().Controller("SampleData").Key("ID").LoadAction("GetStudents"))
                 .ValueExpr("ID")
                 .DisplayExpr("Name")
             );
