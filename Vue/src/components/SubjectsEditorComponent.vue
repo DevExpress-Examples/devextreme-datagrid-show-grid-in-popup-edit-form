@@ -53,11 +53,11 @@ import {
 import type { Subject } from '../data';
 
 interface Props {
-  currentSubjects: Subject[];
-  onSubjectsChange: (subjects: Subject[]) => void;
-  onEditingStart: (e: DxDataGridTypes.EditingStartEvent) => void;
-  onRowValidating: (e: { isValid: boolean }) => void;
-  onSaved: (e: { component: { getDataSource: () => { items: () => Subject[] } } }) => void;
+  currentSubjects?: Subject[];
+  onSubjectsChange?: (subjects: Subject[]) => void;
+  onEditingStart?: (e: DxDataGridTypes.EditingStartEvent) => void;
+  onRowValidating?: (e: { isValid: boolean }) => void;
+  onSaved?: (e: { component: { getDataSource: () => { items: () => Subject[] } } }) => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
