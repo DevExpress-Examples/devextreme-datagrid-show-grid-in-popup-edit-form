@@ -12,7 +12,6 @@ import type { StudentRow, Subject, Student } from '../sevices/employee';
 
 interface EditContextShape {
   editingSubjectsRef: React.MutableRefObject<Subject[]>;
-  // eslint-disable-next-line no-unused-vars
   setSubjectsRef: (subjects: Subject[]) => void;
   saveDisabled: boolean;
   setSaveDisabled: React.Dispatch<React.SetStateAction<boolean>>;
