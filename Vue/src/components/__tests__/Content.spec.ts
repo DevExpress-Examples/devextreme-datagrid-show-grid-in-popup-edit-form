@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
 
 import { mount } from '@vue/test-utils';
-import SubjectsEditorComponent from '../SubjectsEditorComponent.vue';
+import SubjectEditor from '../SubjectEditor.vue';
 
-describe('SubjectsEditorComponent', () => {
+describe('SubjectEditor', () => {
   it('renders properly', () => {
-    const wrapper = mount(SubjectsEditorComponent, { props: { currentSubjects: [] } });
+    const wrapper = mount(SubjectEditor, { props: { currentSubjects: [] } });
     expect(wrapper.find('div').exists()).toBe(true);
   });
 });
